@@ -1,11 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views import generic
+from .models import Category, Product
+
+
+class CategoryListView(generic.ListView):
+    model = Category
+
 
 def index(request):
     currency_num = currency()
+    categorys = Category.objects.all()
+    products = Product.objects.all()
 
     return render(request, 'index.html', context={
-        'currency_num': currency_num}
+        'currency_num': currency_num,
+        'categorys': categorys,
+        'products': products,}
     )
 
 def currency():
