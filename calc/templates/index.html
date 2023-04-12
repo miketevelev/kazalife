@@ -1,10 +1,16 @@
+{%  load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Kazalife - Калькулятор расчета стоимости</title>
+    <link rel="stylesheet" href="{%  static 'css/bootstrap.min.css' %}">
+    <script src="{%  static 'js/bootstrap.min.js' %}"></script>
 </head>
 <body>
-    <h1>{{ currency_num }}</h1>
+    <h1 class="display-1">Kazalife</h1>
+    <p class="lead">Быстрый калькулятор расчета</p>
+    <p>Курс валют по ЦБ на сегодня <mark>{{ currency_num }}</mark></p>
 </body>
 </html>
