@@ -9,6 +9,10 @@ class CategoryListView(generic.ListView):
 
 
 def index(request):
+    resultcome = request.GET['price']
+    if not resultcome:
+        resultcome = '1'
+
     currency_num = currency()
     categorys = Category.objects.all()
     products = Product.objects.all()
@@ -16,7 +20,8 @@ def index(request):
     return render(request, 'index.html', context={
         'currency_num': currency_num,
         'categorys': categorys,
-        'products': products,}
+        'products': products,
+        'resultcome': resultcome,}
     )
 
 def currency():

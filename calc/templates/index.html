@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{%  static 'css/bootstrap.min.css' %}">
     <script src="{%  static 'js/bootstrap.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script type="text/javascript">
       function add_to_total(el){
           var parent = $(el).closest('tr');
@@ -43,21 +44,42 @@
       }
     </script>
 </head>
-<body>
+<form>
     <h1 class="display-1">Kazalife</h1>
     <p class="lead">Быстрый калькулятор расчета</p>
     <p>Курс валют по ЦБ на сегодня <mark>{{ currency_num }}</mark></p>
     <p>
         Процент вашей скидки
-        <span class="inp-group">
-            <select onchange= "add_to_total(this)" name="proc" id="proc">
-                <option value="proc100">50%</option>
-                <option value="proc50">42%</option>
-                <option value="proc25">35%</option>
+            {% if resultcome == '1' %}
+                100%
+            {% elif resultcome == '2' %}
+                50%
+            {% elif resultcome == '3' %}
+                42%
+            {% elif resultcome == '4' %}
+                35%
+            {% elif resultcome == '5' %}
+                25%
+            {% elif resultcome == '6' %}
+                15%
+            {% endif %}
+        <form action="{% url 'index' %}">
+            <select type="submit" name="price" onchange="this.form.submit()" value="dd">
+                <option value="1" selected disabled hidden>Изменить скидку</option>
+                <option value="1">100%</option>
+                <option value="2">50%</option>
+                <option value="3">42%</option>
+                <option value="4">35%</option>
+                <option value="5">25%</option>
+                <option value="6">15%</option>
             </select>
-        </span>
+        </form>
+        <form>Стоимость доставки
+            <input type="number" id="delivery">
+            <a href="">Расчитать стоимость</a>
+        </form>
     </p>
-
+</form>
     <h1>Category</h1>
     {% if categorys %}
     <table class="table table-hover">
@@ -69,15 +91,29 @@
                 <th scope="col">Стоимость</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="base">
             {% for category in categorys %}
             <th style="color: #84c54a;" class="lopendeopdrachten text-center" colspan="5">{{ category.name }}</th>
                 {% for product in products %}
                     {% if product.category.id == category.id %}
                         <tr>
                             <th scope="row">
-                                {{ product.name }} <input type="text" id="proc_inside" class="proc_inside" value="{{ product.proc100 }}">
-                                <input type="hidden" class="pr price" value="{{ product.proc100 }}">
+                                {{ product.name }}
+                                <input type="hidden" id="price" class="pr price" value="
+                                    {% if resultcome == '1' %}
+                                        {{ product.proc100 }}
+                                    {% elif resultcome == '2' %}
+                                        {{ product.proc50 }}
+                                    {% elif resultcome == '3' %}
+                                        {{ product.proc42 }}
+                                    {% elif resultcome == '4' %}
+                                        {{ product.proc35 }}
+                                    {% elif resultcome == '5' %}
+                                        {{ product.proc25 }}
+                                    {% elif resultcome == '6' %}
+                                        {{ product.proc15 }}
+                                    {% endif %}
+                                ">
                                 <input type="hidden" class="pr vp" value="{{ product.vp }}">
                             </th>
                             <td><input type="number" class="pr qty" value="0" onchange= "add_to_total(this)" style="width: 60px; height: 26px"></td>
@@ -95,20 +131,6 @@
         Стоимость доставки: 0 рублей<br/>
         Количество очков: <span id="final_vp">0</span><br/>
         Итогова сумма: <span id="final_price">0</span> рублей</p>
-
-<script>
-    const sel=document.getElementById('proc')
-    sel.addEventListener("change", changeOpt);
-
-    function changeOpt() {
-        let opt=sel.options[sel.selectedIndex]
-        var collect = document.getElementsByClassName('proc_inside');
-          for (el of collect) {
-              {#el.value=opt.value;#}
-              el.value='{' + '{ product.' + opt.value + ' }}';
-            }
-    }
-</script>
 
 </body>
 </html>

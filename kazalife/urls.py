@@ -21,4 +21,5 @@ from calc import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
+    path('index', views.index, name='indexex'),
 ]
